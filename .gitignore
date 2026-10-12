@@ -7,6 +7,10 @@ __pycache__/
 .RData
 .Rproj.user/
 
+# Source traffic data are intentionally not redistributed.
+data/raw-data/
+data/taf_workspace.RData
+
 # Outputs written by the scripts when run from python/
 python/Results_*/
 python/Figures/*
@@ -15,3 +19,8 @@ python/screenshots/
 python/*.pdf
 python/*.png
 python/*.csv
+
+# Common local analysis artifacts
+.pytest_cache/
+.coverage
+htmlcov/
