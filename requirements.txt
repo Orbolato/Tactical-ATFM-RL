@@ -1,0 +1,13 @@
+# Python 3.12. Versions of the RL stack match those recorded in the saved policies.
+stable-baselines3==2.4.0
+sb3-contrib==2.4.0
+gymnasium==1.0.0
+torch==2.6.0
+numpy==1.26.4
+pandas>=2.2
+scipy>=1.13
+scikit-learn>=1.5
+matplotlib==3.9.2
+pyomo>=6.7
+deap>=1.4
+pygame>=2.6

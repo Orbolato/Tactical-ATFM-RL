@@ -1,0 +1,2 @@
+variant,objective,reward,queue_cost,switch_cost,sep_cost,operating_cost_eur,queue_delay_min,spacing_delay_min,total_delay_min,mean_sep_nm,max_sep_nm,sep_changes,config_changes
+Baseline/CM 5-NM reference,544.1111111111111,-544.1111111111111,463.44444444444446,80.66666666666666,0.0,24485.0,1590.0,0.0,1590.0,5.0,5.0,0.0,3.4444444444444446

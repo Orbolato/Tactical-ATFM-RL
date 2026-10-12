@@ -1,0 +1,2 @@
+variant,objective,queue_cost,switch_cost,sep_cost,operating_cost_eur,queue_delay_min,spacing_delay_min,total_delay_min,mean_sep_nm,max_sep_nm,sep_changes,config_changes
+No-separation LB (5 NM),109.92222222222222,28.555555555555557,81.36666666666666,0.0,4946.499999999999,173.33333333333334,0.0,173.33333333333334,5.0,5.0,0.0,10.444444444444445

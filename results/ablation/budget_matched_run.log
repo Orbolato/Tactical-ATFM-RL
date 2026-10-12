@@ -1,0 +1,167 @@
+Loading data and rebuilding original preprocessing...
+Prepared 696 available days; 487 non-test training days.
+
+=== 2023-9-10 ===
+Period 2023-9-10 chosen.
+
+Wrapping the env with a `Monitor` wrapper
+Wrapping the env in a DummyVecEnv.
+  Full FB saved (100k)   obj=331.7
+Period 2023-9-10 chosen.
+
+Period 2023-9-10 chosen.
+
+  FB no curric. (100k)   obj=922.3 (174s, loaded=False)
+Period 2023-9-10 chosen.
+
+Period 2023-9-10 chosen.
+
+  Direct sep. RL (100k)  obj=1637.0 (200s, loaded=False)
+
+=== 2023-12-6 ===
+Period 2023-12-6 chosen.
+
+Wrapping the env with a `Monitor` wrapper
+Wrapping the env in a DummyVecEnv.
+  Full FB saved (100k)   obj=328.2
+Period 2023-12-6 chosen.
+
+Period 2023-12-6 chosen.
+
+  FB no curric. (100k)   obj=1255.0 (176s, loaded=False)
+Period 2023-12-6 chosen.
+
+Period 2023-12-6 chosen.
+
+  Direct sep. RL (100k)  obj=1560.6 (198s, loaded=False)
+
+=== 2022-9-19 ===
+Period 2022-9-19 chosen.
+
+Wrapping the env with a `Monitor` wrapper
+Wrapping the env in a DummyVecEnv.
+  Full FB saved (100k)   obj=371.3
+Period 2022-9-19 chosen.
+
+Period 2022-9-19 chosen.
+
+  FB no curric. (100k)   obj=658.1 (176s, loaded=False)
+Period 2022-9-19 chosen.
+
+Period 2022-9-19 chosen.
+
+  Direct sep. RL (100k)  obj=1242.6 (198s, loaded=False)
+
+=== 2022-5-29 ===
+Period 2022-5-29 chosen.
+
+Wrapping the env with a `Monitor` wrapper
+Wrapping the env in a DummyVecEnv.
+  Full FB saved (100k)   obj=285.9
+Period 2022-5-29 chosen.
+
+Period 2022-5-29 chosen.
+
+  FB no curric. (100k)   obj=704.6 (177s, loaded=False)
+Period 2022-5-29 chosen.
+
+Period 2022-5-29 chosen.
+
+  Direct sep. RL (100k)  obj=659.6 (197s, loaded=False)
+
+=== 2023-6-1 ===
+Period 2023-6-1 chosen.
+
+Wrapping the env with a `Monitor` wrapper
+Wrapping the env in a DummyVecEnv.
+  Full FB saved (100k)   obj=407.4
+Period 2023-6-1 chosen.
+
+Period 2023-6-1 chosen.
+
+  FB no curric. (100k)   obj=1143.2 (177s, loaded=False)
+Period 2023-6-1 chosen.
+
+Period 2023-6-1 chosen.
+
+  Direct sep. RL (100k)  obj=1517.4 (198s, loaded=False)
+
+=== 2023-6-30 ===
+Period 2023-6-30 chosen.
+
+Wrapping the env with a `Monitor` wrapper
+Wrapping the env in a DummyVecEnv.
+  Full FB saved (100k)   obj=290.1
+Period 2023-6-30 chosen.
+
+Period 2023-6-30 chosen.
+
+  FB no curric. (100k)   obj=1228.4 (177s, loaded=False)
+Period 2023-6-30 chosen.
+
+Period 2023-6-30 chosen.
+
+  Direct sep. RL (100k)  obj=1687.5 (198s, loaded=False)
+
+=== 2023-1-29 ===
+Period 2023-1-29 chosen.
+
+Wrapping the env with a `Monitor` wrapper
+Wrapping the env in a DummyVecEnv.
+  Full FB saved (100k)   obj=248.6
+Period 2023-1-29 chosen.
+
+Period 2023-1-29 chosen.
+
+  FB no curric. (100k)   obj=779.6 (177s, loaded=False)
+Period 2023-1-29 chosen.
+
+Period 2023-1-29 chosen.
+
+  Direct sep. RL (100k)  obj=522.5 (198s, loaded=False)
+
+=== 2023-11-15 ===
+Period 2023-11-15 chosen.
+
+Wrapping the env with a `Monitor` wrapper
+Wrapping the env in a DummyVecEnv.
+  Full FB saved (100k)   obj=379.5
+Period 2023-11-15 chosen.
+
+Period 2023-11-15 chosen.
+
+  FB no curric. (100k)   obj=532.7 (177s, loaded=False)
+Period 2023-11-15 chosen.
+
+Period 2023-11-15 chosen.
+
+  Direct sep. RL (100k)  obj=1120.9 (198s, loaded=False)
+
+=== 2022-8-2 ===
+Period 2022-8-2 chosen.
+
+Wrapping the env with a `Monitor` wrapper
+Wrapping the env in a DummyVecEnv.
+  Full FB saved (100k)   obj=245.3
+Period 2022-8-2 chosen.
+
+Period 2022-8-2 chosen.
+
+  FB no curric. (100k)   obj=721.1 (183s, loaded=False)
+Period 2022-8-2 chosen.
+
+Period 2022-8-2 chosen.
+
+  Direct sep. RL (100k)  obj=1047.1 (207s, loaded=False)
+
+=== Budget-matched summary (100k) ===
+              variant  days   objective  queue_cost  total_delay_min  mean_sep_nm  sep_changes  config_changes  train_seconds
+Direct sep. RL (100k)     9 1221.688889  311.666667      1177.500000    15.538194    69.666667       30.222222     199.077764
+ FB no curric. (100k)     9  882.777778  121.555556      1492.583333    25.005787    33.111111       27.777778     177.311856
+ Full FB saved (100k)     9  320.888889   27.222222       843.250000    18.263889     5.555556        5.777778       0.000000
+
+=== Budget-matched separation distribution (100k) ===
+              variant  total_steps  pct_5  pct_10  pct_15  pct_20  pct_25  pct_30  pct_le10
+ Full FB saved (100k)          864   11.8     8.0    21.1    37.2     6.2    15.7      19.8
+ FB no curric. (100k)          864    2.3     4.7     5.9    11.6    28.5    47.0       7.1
+Direct sep. RL (100k)          864    9.5    35.3    20.5    15.2     8.8    10.8      44.8

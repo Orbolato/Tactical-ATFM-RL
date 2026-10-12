@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+.venv/
+.spyproject/
+.ipynb_checkpoints/
+.Rhistory
+.RData
+.Rproj.user/
+
+# Outputs written by the scripts when run from python/
+python/Results_*/
+python/Figures/*
+!python/Figures/.gitkeep
+python/screenshots/
+python/*.pdf
+python/*.png
+python/*.csv

@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: "If you use this code or data, please cite the article below."
+title: "Model-free RL for tactical air traffic flow and capacity management under uncertainty"
+repository-code: "https://github.com/Orbolato/Tactical-ATFM-RL"
+url: "https://orbolato.github.io/publications/tactical-atfm-reinforcement-learning/"
+authors:
+  - family-names: Carvalho
+    given-names: Lucas Orbolato
+    affiliation: Aeronautics Institute of Technology (ITA)
+  - family-names: Murça
+    given-names: Mayara Condé Rocha
+    affiliation: Aeronautics Institute of Technology (ITA)
+preferred-citation:
+  type: article
+  title: "An optimized model-free reinforcement learning approach for tactical air traffic flow and capacity management under uncertainty"
+  authors:
+    - family-names: Carvalho
+      given-names: Lucas Orbolato
+    - family-names: Murça
+      given-names: Mayara Condé Rocha
+  journal: Transport Policy
+  volume: 188
+  start: 104380
+  year: 2026
+  doi: 10.1016/j.tranpol.2026.104380
