@@ -21,6 +21,16 @@ from pathlib import Path
 import os
 os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
 
+# Exponent of the prior in the weather scenario rule of the FB training scenarios (FB LB and FB): 0 is the published
+# rule (product of the confusion and transition probabilities), 1 is Bayes' rule. See the README, "Note on the weather
+# scenario sampling rule".
+ZETA = 0.0
+# Folder of the FB LB and FB models and figures; a run with another ZETA neither loads the published FB models nor
+# overwrites them
+FB_DIR = 'Results_2' if ZETA == 0 else f'Results_2_zeta{ZETA:g}'
+if ZETA != 0:
+    os.makedirs(FB_DIR, exist_ok=True)
+
 from torch.distributions import Distribution
 Distribution.set_default_validate_args(False)
 
@@ -1118,6 +1128,9 @@ for i in range(p_ws_trans.shape[0]):
 for i in range(taf_data.shape[0]):
     p_wc_error[taf_data.loc[i,'weather_condition'], data.loc[i,'weather_condition']] += 1
     p_ws_error[taf_data.loc[i,'wind_state'], data.loc[i,'wind_state']] += 1
+# Prior of the weather scenario rule: share of each state in the METARs of these rows (used only if ZETA != 0)
+p_wc_prior = p_wc_error.sum(axis=0) / p_wc_error.sum()
+p_ws_prior = p_ws_error.sum(axis=0) / p_ws_error.sum()
 for i in range(p_wc_error.shape[0]):
     p_wc_error[i] = p_wc_error[i] / np.sum(p_wc_error[i])
 for i in range(p_ws_error.shape[0]):
@@ -1940,10 +1953,11 @@ for day in np.array(test_days)[lowest_7_idx]:
                            dep_mean=dep_mean, dep_std=dep_std,
                            p_wc_trans=p_wc_trans, p_ws_trans=p_ws_trans,
                            p_wc_error=p_wc_error, p_ws_error=p_ws_error,
-                           chosen_day=day)
+                           chosen_day=day,
+                           zeta=ZETA, p_wc_prior=p_wc_prior, p_ws_prior=p_ws_prior)
 
     model_4_lb = MaskablePPO("MlpPolicy", env_4_lb, gamma=1, verbose=1)
-    file = wd + "/models/Results_2/dcb_ppo_fb_2_lb_" + day + ".zip"
+    file = wd + "/models/" + FB_DIR + "/dcb_ppo_fb_2_lb_" + day + ".zip"
     file_path = Path(file)
     if (file_path).exists():
         print('Loading model...')
@@ -1958,7 +1972,7 @@ for day in np.array(test_days)[lowest_7_idx]:
         end = time.time()
         print('Training finished in ' + str(round(end-start, 2)) + ' seconds.\n')
         print('Saving model...')
-        model_4_lb.save("Results_2/dcb_ppo_fb_2_lb_" + day) # Save model
+        model_4_lb.save(FB_DIR + "/dcb_ppo_fb_2_lb_" + day) # Save model
         print('Done.\n')
     
     env_4 = tdcb_sp.RunwayEnv(alpha = 2, beta = 1, delta = 0.3, 
@@ -1982,10 +1996,11 @@ for day in np.array(test_days)[lowest_7_idx]:
                            dep_mean=dep_mean, dep_std=dep_std,
                            p_wc_trans=p_wc_trans, p_ws_trans=p_ws_trans,
                            p_wc_error=p_wc_error, p_ws_error=p_ws_error,
-                           chosen_day=day)
+                           chosen_day=day,
+                           zeta=ZETA, p_wc_prior=p_wc_prior, p_ws_prior=p_ws_prior)
 
     model_4 = MaskablePPO("MlpPolicy", env_4, gamma=1, verbose=1)
-    file = wd + "/models/Results_2/dcb_ppo_fb_2_" + day + ".zip"
+    file = wd + "/models/" + FB_DIR + "/dcb_ppo_fb_2_" + day + ".zip"
     file_path = Path(file)
     if (file_path).exists():
         print('Loading model...')
@@ -2000,7 +2015,7 @@ for day in np.array(test_days)[lowest_7_idx]:
         end = time.time()
         print('Training finished in ' + str(round(end-start, 2)) + ' seconds.\n')
         print('Saving model...')
-        model_4.save("Results_2/dcb_ppo_fb_2_" + day) # Save model
+        model_4.save(FB_DIR + "/dcb_ppo_fb_2_" + day) # Save model
         print('Done.\n')
     
     print('Testing...')
@@ -2046,7 +2061,7 @@ plt.plot(results_4, 'b')
 plt.legend(['DCB LB (CM)','DCB UB','DCB','DCB FB'])
 plt.xlabel('Days')
 plt.ylabel('Total Reward')
-plt.savefig('Results_2/dcb_ppo_fb_2_results.pdf', format='pdf')
+plt.savefig(FB_DIR + '/dcb_ppo_fb_2_results.pdf', format='pdf')
 plt.show()
 
 # Plotting improvement
@@ -2056,7 +2071,7 @@ plt.title('DCB FB vs DCB LB (CM)')
 plt.hist(improv_list, bins=50)
 plt.ylabel('Frequency')
 plt.xlabel('Difference')
-plt.savefig('Results_2/dcb_ppo_fb_2_improvement.pdf', format='pdf')
+plt.savefig(FB_DIR + '/dcb_ppo_fb_2_improvement.pdf', format='pdf')
 plt.show()
 
 # Plotting improvement
@@ -2066,7 +2081,7 @@ plt.title('DCB FB vs DCB UB')
 plt.hist(improv_list, bins=50)
 plt.ylabel('Frequency')
 plt.xlabel('Difference')
-plt.savefig('Results_2/dcb_ppo_fb_2_improvement_2.pdf', format='pdf')
+plt.savefig(FB_DIR + '/dcb_ppo_fb_2_improvement_2.pdf', format='pdf')
 plt.show()
 
 # Plotting improvement
@@ -2076,7 +2091,7 @@ plt.title('DCB FB vs DCB DB')
 plt.hist(improv_list, bins=50)
 plt.ylabel('Frequency')
 plt.xlabel('Difference')
-plt.savefig('Results_2/dcb_ppo_fb_2_improvement_3.pdf', format='pdf')
+plt.savefig(FB_DIR + '/dcb_ppo_fb_2_improvement_3.pdf', format='pdf')
 plt.show()
     
 print('Done.\n')
