@@ -100,6 +100,10 @@ These scripts load retained policies where available and train only when a requi
 
 The CM/LB, UB, DB, and FB policies differ in their action constraints. The tactical environments represent separation as a decision state/action bounded from 5 to 30 NM; the archived operational input itself is not a record of the learned MIT decisions.
 
+### Note on the weather scenario sampling rule
+
+The FB scenarios draw the weather condition and the wind state of each interval from the normalized product of the TAF confusion row and the transition row from the previous state, `q(Y_t) ∝ P(Y_t | Y_{t-1}) · P(Y_t | Y'_t)` (`_generate_next_state()` in `python/improved_gym_tdcboptimizer_specific.py` and `python/improved_gym_tdcboptimizer_specific_2.py`), as in the runway-capacity study. This product is naive Bayes with an effective prior proportional to `P(Y_t)²`, so the scenarios contain less adverse weather than the observations; Bayes' rule would divide it by the prior `P(Y_t)`. The interpretation, the effect on the scenarios, and a sensitivity analysis on the runway-capacity problem are documented in [Stochastic-Runway-Capacity-RL](https://github.com/Orbolato/Stochastic-Runway-Capacity-RL#note-on-the-weather-scenario-sampling-rule). The rule was not varied in this study. After publication, the FB environments gained a `zeta` option (default 0, the published rule) with the priors `p_wc_prior` and `p_ws_prior`, the shares of each state in the METAR rows used for the confusion matrices: `ZETA` at the top of `python/maskable_ppo_test_2.py` sets it for the FB LB and FB training, and the other scripts keep the default. A run with ζ ≠ 0 saves and looks for its FB models in `Results_2_zeta<ζ>`, so it neither loads nor overwrites the published FB models. With ζ = 0 the environments skip the division, so seeded training episodes are identical to those of the published code.
+
 ### Scripts (`python/`)
 
 | File | Purpose |
@@ -176,7 +180,7 @@ The same checks run automatically in GitHub Actions. They verify principal artif
 
 ## Historical implementation notes
 
-Only maintenance-oriented changes were made relative to the prepared working copies: local absolute paths were made repository-relative, and environment module filenames imported historically as `improved_gym_dcboptimizer*` were normalized to `improved_gym_tdcboptimizer*` after the experiments. `mit_characterization.py` is the MIT-processing section of the study workflow separated into a standalone script. The repository preserves this historical implementation rather than presenting a clean-room rewrite.
+Only maintenance-oriented changes were made relative to the prepared working copies: local absolute paths were made repository-relative, and environment module filenames imported historically as `improved_gym_dcboptimizer*` were normalized to `improved_gym_tdcboptimizer*` after the experiments. `mit_characterization.py` is the MIT-processing section of the study workflow separated into a standalone script. The repository preserves this historical implementation rather than presenting a clean-room rewrite. The one functional addition is the `zeta` option of the weather scenario rule, added after publication; its default reproduces the published scenarios (see the [note on the sampling rule](#note-on-the-weather-scenario-sampling-rule)).
 
 PPO uses the Stable-Baselines3 defaults with `gamma = 1`. Training is stochastic; use the retained policies for policy re-evaluation rather than interpreting a new training run as an exact numerical reproduction.
 

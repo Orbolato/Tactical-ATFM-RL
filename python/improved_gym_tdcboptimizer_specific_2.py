@@ -31,7 +31,7 @@ class RunwayEnv(gym.Env):
                  dep_mean, dep_std,
                  p_wc_trans, p_ws_trans,
                  p_wc_error, p_ws_error,
-                 chosen_day=None, render_mode=None):
+                 chosen_day=None, render_mode=None, zeta=0.0, p_wc_prior=None, p_ws_prior=None):
         """
         Initialize the runway environment.
         
@@ -73,6 +73,14 @@ class RunwayEnv(gym.Env):
             Specific day to simulate, or random if None
         render_mode : str, optional
             Rendering mode, one of None, "human", or "rgb_array"
+        zeta : float, optional
+            Exponent of the prior in the weather scenario rule: the product of the confusion and transition
+            probabilities is divided by prior**zeta before it is normalized. 0 (default) is the published rule
+            and leaves the product unchanged; 1 is Bayes' rule. See the README, "Note on the weather scenario
+            sampling rule".
+        p_wc_prior, p_ws_prior : numpy.ndarray, optional
+            Shares of each weather condition and wind state in the METARs used for the confusion matrices;
+            required when zeta is not 0
         """
         self._init_rendering(render_mode = render_mode)
         self.window_size = 512  # Size of PyGame window
@@ -91,6 +99,7 @@ class RunwayEnv(gym.Env):
             dep_mean, dep_std,
             p_wc_trans, p_ws_trans, p_wc_error, p_ws_error
         )
+        self._set_scenario_rule(zeta, p_wc_prior, p_ws_prior)
         
         # Select day if not provided
         self.day = self._select_day(chosen_day)
@@ -415,6 +424,18 @@ class RunwayEnv(gym.Env):
 
         return observation, info
     
+    def _set_scenario_rule(self, zeta, p_wc_prior, p_ws_prior):
+        """Prior exponent of the weather scenario rule; zeta = 0 is the published rule and needs no prior."""
+        self.zeta = float(zeta)
+        self.p_wc_prior, self.p_ws_prior = p_wc_prior, p_ws_prior
+        if self.zeta != 0:
+            if p_wc_prior is None or p_ws_prior is None:
+                raise ValueError('zeta != 0 needs p_wc_prior and p_ws_prior')
+            self.p_wc_prior = np.asarray(p_wc_prior, dtype=float)
+            self.p_ws_prior = np.asarray(p_ws_prior, dtype=float)
+            if (self.p_wc_prior <= 0).any() or (self.p_ws_prior <= 0).any():
+                raise ValueError('p_wc_prior and p_ws_prior must be positive')
+
     def _generate_next_state(self, RC_f, a_f, d_f, sep, training=True):
         """
         Generate the next state given the current action results.
@@ -461,8 +482,12 @@ class RunwayEnv(gym.Env):
             
             # Sample next weather condition and wind state with transitions
             p_wc = self.p_wc_error[self.day_data.loc[self.time_step, 'weather_condition']] * self.p_wc_trans[self.prev_wc] + 1e-12
+            if self.zeta != 0:
+                p_wc = p_wc / self.p_wc_prior ** self.zeta
             p_wc = p_wc / np.sum(p_wc)
             p_ws = self.p_ws_error[self.day_data.loc[self.time_step, 'wind_state']] * self.p_ws_trans[self.prev_ws] + 1e-12
+            if self.zeta != 0:
+                p_ws = p_ws / self.p_ws_prior ** self.zeta
             p_ws = p_ws / np.sum(p_ws)
             wc = np.random.choice([0, 1, 2], p=p_wc)
             ws = np.random.choice([0, 1, 2, 3], p=p_ws)
