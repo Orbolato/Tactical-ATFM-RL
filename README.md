@@ -100,6 +100,10 @@ These scripts load retained policies where available and train only when a requi
 
 The CM/LB, UB, DB, and FB policies differ in their action constraints. The tactical environments represent separation as a decision state/action bounded from 5 to 30 NM; the archived operational input itself is not a record of the learned MIT decisions.
 
+### Note on the weather scenario sampling rule
+
+The FB scenarios draw the weather condition and the wind state of each interval from the normalized product of the TAF confusion row and the transition row from the previous state, `q(Y_t) ∝ P(Y_t | Y_{t-1}) · P(Y_t | Y'_t)` (`_generate_next_state()` in `python/improved_gym_tdcboptimizer_specific.py` and `python/improved_gym_tdcboptimizer_specific_2.py`), as in the runway-capacity study. This product is naive Bayes with an effective prior proportional to `P(Y_t)²`, so the scenarios contain less adverse weather than the observations; Bayes' rule would divide it by the prior `P(Y_t)`. The interpretation, the effect on the scenarios, and a sensitivity analysis on the runway-capacity problem are documented in [Stochastic-Runway-Capacity-RL](https://github.com/Orbolato/Stochastic-Runway-Capacity-RL#note-on-the-weather-scenario-sampling-rule). The rule was not varied in this study, and the code is unchanged.
+
 ### Scripts (`python/`)
 
 | File | Purpose |
